@@ -7,7 +7,7 @@ public class Client {
 
         Socket s2= new Socket("localhost", 7777);
         DataOutputStream ds2= new DataOutputStream(s2.getOutputStream());
-        ds2.writeUTF("Hello Bangladesh????");
+        ds2.writeUTF("How Are You??");
 
         
     }
