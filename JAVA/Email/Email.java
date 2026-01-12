@@ -49,7 +49,7 @@ class Email {
     send("TO: Enter Recipient Email Here\r\n");
     send("Subject: Send Test Email" + "\r\n");
     send("\r\n"); // Blank line required between headers and body
-    send("Hello Sir, I am Md. Shibli Noman Sarkar. My Student Id is 2210776130\r\n");
+    send("Typing the sending message Here........\r\n");
     send(".\r\n");
     System.out.println("SERVER: " + br.readLine());
 
