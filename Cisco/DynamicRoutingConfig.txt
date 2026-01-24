@@ -2,7 +2,7 @@
 enable
 configure terminal
 interface serial 0/0/0
-ip address 192.168.10.10 255.255.255.0
+ip address 192.168.10.3 255.255.255.0
 interface serial 0/0/1
 ip address 10.0.0.1 255.0.0.0
 interface serial 0/0/3
@@ -10,7 +10,7 @@ ip address 20.0.0.1 255.0.0.0
 router rip
 version 2
 no auto-summary
-network 192.168.1.0
+network 192.168.10.00
 network 10.0.0.0
 network 20.0.0.0
 exit
@@ -18,7 +18,7 @@ exit
 ##### Router 2 ######
 enable
 configure terminal
-ip address 192.168.20.10 255.255.255.0
+ip address 192.168.20.3 255.255.255.0
 interface serial 0/0/1
 ip address 10.0.0.2 255.0.0.0
 interface serial 0/0/3
@@ -26,7 +26,7 @@ ip address 30.0.0.1 255.0.0.0
 router rip
 version 2
 no auto-summary
-network 192.168.2.0
+network 192.168.20.10
 network 10.0.0.0
 network 30.0.0.0
 exit
@@ -34,7 +34,7 @@ exit
 ##### Router 3 ######
 enable
 configure terminal
-ip address 192.168.20.10 255.255.255.0
+ip address 192.168.20.3 255.255.255.0
 interface serial 0/0/1
 ip address 20.0.0.2 255.0.0.0
 interface serial 0/0/3
@@ -42,7 +42,7 @@ ip address 30.0.0.2 255.0.0.0
 router rip
 version 2
 no auto-summary
-network 192.168.3.0
+network 192.168.30.10
 network 20.0.0.0
 network 30.0.0.0
 exit
