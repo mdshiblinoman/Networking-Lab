@@ -11,7 +11,7 @@ class CCEmail {
 
         // ====== CHANGE THESE ======
         String fromEmail = "yourmail@gmail.com";
-        String password = "your_app_password"; // Gmail App Password
+        String password = "csbjfxvmhmvtcvct"; // Gmail App Password
         String toEmail = "receiver@gmail.com";
         String ccEmail = "ccreceiver@gmail.com";
         // ==========================
