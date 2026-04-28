@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class client {
-
     public static void main(String[] args) throws Exception {
 
         Socket s2 = new Socket("localhost", 7777);
