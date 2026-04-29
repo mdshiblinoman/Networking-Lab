@@ -7,10 +7,10 @@ class Email {
   private static DataOutputStream dos;
   public static BufferedReader br;
 
-  @SuppressWarnings("resource")
   public static void main(String argv[]) throws Exception {
-    String user = "Enter Your Email Here";
-    String pass = "Enter Your Password Here";
+    String user = "s2210776130@ru.ac.bd";
+    String pass = "dkdfe";
+    String toEmail = "mdshiblisharkar@gmail.com";
 
     String username = new String(Base64.getEncoder().encode(user.getBytes()));
     String password = new String(Base64.getEncoder().encode(pass.getBytes()));
@@ -37,17 +37,17 @@ class Email {
     send(password + "\r\n");
     System.out.println("SERVER: " + br.readLine());
 
-    send("MAIL FROM:<Enter Your Email Here>\r\n");
+    send("MAIL FROM:<" + user + ">\r\n");
     System.out.println("SERVER: " + br.readLine());
 
-    send("RCPT TO:<Enter Recipient Email Here>\r\n");
+    send("RCPT TO:<" + toEmail + ">\r\n");
     System.out.println("SERVER: " + br.readLine());
 
     send("DATA\r\n");
     System.out.println("SERVER: " + br.readLine());
 
-    send("FROM: Enter Your Email Here\r\n");
-    send("TO: Enter Recipient Email Here\r\n");
+    send("FROM: " + user + "\r\n");
+    send("TO: " + toEmail + "\r\n");
     send("Subject: Send Test Email" + "\r\n");
     send("\r\n"); // Blank line required between headers and body
     send("Typing the sending message Here........\r\n");

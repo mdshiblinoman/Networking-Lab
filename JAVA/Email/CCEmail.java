@@ -1,21 +1,18 @@
 import java.io.*;
 import javax.net.ssl.*;
-import java.util.*;
+import java.util.Base64;
 
 class CCEmail {
 
     private static DataOutputStream dos;
     private static BufferedReader br;
 
-    @SuppressWarnings("resource")
     public static void main(String[] args) throws Exception {
 
-        // ====== CHANGE THESE ======
-        String fromEmail = "yourmail@gmail.com";
-        String password = "gmailpassword"; // Gmail App Password
-        String toEmail = "receiver@gmail.com";
-        String ccEmail = "ccreceiver@gmail.com";
-        // ==========================
+        String fromEmail = "s2210776130@ru.ac.bd";
+        String password = "idfioeiof";
+        String toEmail = "naimur.ru.cse@gmail.com";
+        String ccEmail = "ek369542@gmail.com";
 
         String username = Base64.getEncoder().encodeToString(fromEmail.getBytes());
         String pass = Base64.getEncoder().encodeToString(password.getBytes());
@@ -26,49 +23,47 @@ class CCEmail {
         dos = new DataOutputStream(socket.getOutputStream());
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        System.out.println("SERVER: " + br.readLine());
+        readLine(); // Server greeting
 
         send("EHLO smtp.gmail.com\r\n");
-        readResponse();
+        readEHLO();
 
         send("AUTH LOGIN\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine(); // 334 username prompt
 
         send(username + "\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine(); // 334 password prompt
 
         send(pass + "\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine(); // 235 authentication success
 
         send("MAIL FROM:<" + fromEmail + ">\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine();
 
         send("RCPT TO:<" + toEmail + ">\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine();
 
-        send("RCPT TO:<" + ccEmail + ">\r\n"); // ✅ CC recipient
-        System.out.println("SERVER: " + br.readLine());
+        send("RCPT TO:<" + ccEmail + ">\r\n");
+        readLine();
 
         send("DATA\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine();
 
-        // ====== EMAIL HEADERS ======
-        send("FROM: " + fromEmail + "\r\n");
-        send("TO: " + toEmail + "\r\n");
-        send("CC: " + ccEmail + "\r\n");
+        send("From: " + fromEmail + "\r\n");
+        send("To: " + toEmail + "\r\n");
+        send("Cc: " + ccEmail + "\r\n");
         send("Subject: Test Email with CC\r\n");
-        send("\r\n"); // blank line between headers and body
+        send("\r\n");
 
-        // ====== EMAIL BODY ======
         send("Hello,\r\n");
-        send("This is a test email sent using Java SMTP with CC support.\r\n");
+        send("This is a test email using Java SMTP.\r\n");
         send("Regards,\r\nJava Program\r\n");
 
-        send(".\r\n"); // end of DATA
-        System.out.println("SERVER: " + br.readLine());
+        send(".\r\n");
+        readLine();
 
         send("QUIT\r\n");
-        System.out.println("SERVER: " + br.readLine());
+        readLine();
 
         socket.close();
     }
@@ -77,14 +72,22 @@ class CCEmail {
         dos.writeBytes(s);
         dos.flush();
         System.out.print("CLIENT: " + s);
-        Thread.sleep(500);
+        Thread.sleep(200);
     }
 
-    private static void readResponse() throws Exception {
+    private static void readLine() throws Exception {
+        String line = br.readLine();
+        if (line == null) {
+            throw new RuntimeException("Server closed connection (Broken pipe root cause)");
+        }
+        System.out.println("SERVER: " + line);
+    }
+
+    private static void readEHLO() throws Exception {
         String line;
         while ((line = br.readLine()) != null) {
             System.out.println("SERVER: " + line);
-            if (line.startsWith("250 "))
+            if (line.length() > 3 && line.charAt(3) == ' ')
                 break;
         }
     }
