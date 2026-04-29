@@ -1,0 +1,18 @@
+no
+enter
+en
+config t
+int gig0/0
+ip address 192.168.3.10 255.255.255.0
+no shutdown
+ex
+int gig0/1
+ip address 10.0.0.2 255.0.0.0
+no shutdown
+ex
+int gig0/2
+ip address 30.0.0.2 255.0.0.0
+no shutdown
+ex
+ip route 192.168.2.0 255.255.255.0 10.0.0.2
+ex
