@@ -1,17 +1,18 @@
 import java.io.*;
 import javax.net.ssl.*;
-import java.util.Base64;
+import java.util.*;
 
 class CCEmail {
 
     private static DataOutputStream dos;
     private static BufferedReader br;
 
+    @SuppressWarnings("resource")
     public static void main(String[] args) throws Exception {
 
         // ====== CHANGE THESE ======
         String fromEmail = "yourmail@gmail.com";
-        String password = "csbjfxvmhmvtcvct"; // Gmail App Password
+        String password = "gmailpassword"; // Gmail App Password
         String toEmail = "receiver@gmail.com";
         String ccEmail = "ccreceiver@gmail.com";
         // ==========================

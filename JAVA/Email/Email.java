@@ -7,6 +7,7 @@ class Email {
   private static DataOutputStream dos;
   public static BufferedReader br;
 
+  @SuppressWarnings("resource")
   public static void main(String argv[]) throws Exception {
     String user = "Enter Your Email Here";
     String pass = "Enter Your Password Here";
