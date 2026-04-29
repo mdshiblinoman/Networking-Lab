@@ -9,10 +9,10 @@ class CCEmail {
 
     public static void main(String[] args) throws Exception {
 
-        String fromEmail = "s2210776130@ru.ac.bd";
-        String password = "idfioeiof";
-        String toEmail = "naimur.ru.cse@gmail.com";
-        String ccEmail = "ek369542@gmail.com";
+        String fromEmail = "enter_your_gmail@gmail.com";
+        String password = "enter_your_app_password";
+        String toEmail = "enter_to_email@gmail.com";
+        String ccEmail = "enter_cc_email@gmail.com";
 
         String username = Base64.getEncoder().encodeToString(fromEmail.getBytes());
         String pass = Base64.getEncoder().encodeToString(password.getBytes());

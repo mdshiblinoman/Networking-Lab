@@ -4,73 +4,102 @@ import java.util.Base64;
 
 public class BCCEmail {
 
+    private static DataOutputStream dos;
+    private static BufferedReader br;
+
     public static void main(String[] args) throws Exception {
 
-        String fromEmail = "s2210776130@ru.ac.bd";
-        String password = "adfe";
-        String toEmail = "naimur.ru.cse@gmail.com";
-        String ccEmail = "ek369542@gmail.com";
+        String fromEmail = "enter_your_gmail@gmail.com"; // ✅ Gmail use করো
+        String appPassword = "enter_your_app_password"; // ✅ App Password
+
+        String toEmail = "enter_to_email@gmail.com"; // ✅ TO
+        String ccEmail = "enter_cc_email@gmail.com"; // ✅ CC
+        String bccEmail = "enter_bcc_email@gmail.com"; // ✅ BCC
 
         String username = Base64.getEncoder().encodeToString(fromEmail.getBytes());
-        String pass = Base64.getEncoder().encodeToString(password.getBytes());
+        String password = Base64.getEncoder().encodeToString(appPassword.getBytes());
 
-        SSLSocket socket = (SSLSocket) SSLSocketFactory
-                .getDefault()
+        SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault()
                 .createSocket("smtp.gmail.com", 465);
 
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
-        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        dos = new DataOutputStream(socket.getOutputStream());
+        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        // Server greeting
-        br.readLine();
+        readLine(); // 220
 
-        send(dos, "EHLO localhost\r\n");
+        send("EHLO smtp.gmail.com\r\n");
+        readEHLO();
 
-        send(dos, "AUTH LOGIN\r\n");
-        br.readLine();
+        send("AUTH LOGIN\r\n");
+        readLine();
 
-        send(dos, username + "\r\n");
-        br.readLine();
+        send(username + "\r\n");
+        readLine();
 
-        send(dos, pass + "\r\n");
-        br.readLine();
+        send(password + "\r\n");
+        readLine(); // 235 success
 
-        // Sender
-        send(dos, "MAIL FROM:<" + fromEmail + ">\r\n");
+        send("MAIL FROM:<" + fromEmail + ">\r\n");
+        readLine();
 
-        // TO (visible)
-        send(dos, "RCPT TO:<" + toEmail + ">\r\n");
+        // ✅ TO
+        send("RCPT TO:<" + toEmail + ">\r\n");
+        readLine();
 
-        // BCC (hidden)
-        send(dos, "RCPT TO:<" + ccEmail + ">\r\n");
+        // ✅ CC
+        send("RCPT TO:<" + ccEmail + ">\r\n");
+        readLine();
 
-        send(dos, "DATA\r\n");
-        br.readLine();
+        // ✅ BCC (hidden)
+        send("RCPT TO:<" + bccEmail + ">\r\n");
+        readLine();
 
-        // Headers (NO BCC here ❌)
-        send(dos, "From: " + fromEmail + "\r\n");
-        send(dos, "To: " + toEmail + "\r\n");
-        send(dos, "Subject: BCC Email Test\r\n");
-        send(dos, "MIME-Version: 1.0\r\n");
-        send(dos, "Content-Type: text/plain\r\n");
-        send(dos, "\r\n");
+        send("DATA\r\n");
+        readLine();
 
-        // Body
-        send(dos, "Hello,\r\nThis is a proper BCC email test.\r\n");
+        // ✅ Headers
+        send("From: " + fromEmail + "\r\n");
+        send("To: " + toEmail + "\r\n");
+        send("Cc: " + ccEmail + "\r\n");
+        send("Subject: Test Email (CC + BCC)\r\n");
+        send("\r\n");
 
-        // End of message
-        send(dos, ".\r\n");
-        br.readLine();
+        // ✅ Body
+        send("Hello,\r\n");
+        send("This is a test email sent using Java SMTP.\r\n");
+        send("CC and BCC are included.\r\n");
+        send("Regards,\r\nShibli\r\n");
 
-        send(dos, "QUIT\r\n");
+        send(".\r\n");
+        readLine();
+
+        send("QUIT\r\n");
+        readLine();
 
         socket.close();
     }
 
-    private static void send(DataOutputStream dos, String msg) throws Exception {
-        dos.writeBytes(msg);
+    private static void send(String s) throws Exception {
+        dos.writeBytes(s);
         dos.flush();
-        System.out.println("CLIENT: " + msg);
+        System.out.print("CLIENT: " + s);
+        Thread.sleep(200);
+    }
+
+    private static void readLine() throws Exception {
+        String line = br.readLine();
+        if (line == null) {
+            throw new RuntimeException("Server closed connection");
+        }
+        System.out.println("SERVER: " + line);
+    }
+
+    private static void readEHLO() throws Exception {
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println("SERVER: " + line);
+            if (line.length() > 3 && line.charAt(3) == ' ')
+                break;
+        }
     }
 }

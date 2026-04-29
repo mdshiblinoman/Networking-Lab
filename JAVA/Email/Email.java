@@ -8,9 +8,9 @@ class Email {
   public static BufferedReader br;
 
   public static void main(String argv[]) throws Exception {
-    String user = "s2210776130@ru.ac.bd";
-    String pass = "dkdfe";
-    String toEmail = "mdshiblisharkar@gmail.com";
+    String user = "enter_your_gmail@gmail.com";
+    String pass = "enter_your_app_password";
+    String toEmail = "enter_to_email@gmail.com";
 
     String username = new String(Base64.getEncoder().encode(user.getBytes()));
     String password = new String(Base64.getEncoder().encode(pass.getBytes()));
