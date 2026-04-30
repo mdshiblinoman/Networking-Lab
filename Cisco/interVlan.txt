@@ -1,0 +1,41 @@
+***** Switch Configuration *****
+en
+config t
+vlan 10
+name IT
+ex
+vlan 20
+name HR
+ex
+int fa0/1
+switchport mode access
+switchport access vlan 10
+ex
+int fa0/2
+switchport mode access
+switchport access vlan 10
+ex
+int fa0/3
+switchport mode access
+switchport access vlan 20
+ex
+int fa0/4
+switchport mode access
+switchport access vlan 20
+ex
+
+
+***** Router Configuration *****
+enable
+config t
+
+int gig0/0
+no shutdown
+
+int gig0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+
+int gig0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
