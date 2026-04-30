@@ -14,7 +14,9 @@ class Email {
 
     String username = new String(Base64.getEncoder().encode(user.getBytes()));
     String password = new String(Base64.getEncoder().encode(pass.getBytes()));
+
     SSLSocket s = (SSLSocket) SSLSocketFactory.getDefault().createSocket("smtp.gmail.com", 465);
+
     dos = new DataOutputStream(s.getOutputStream());
     br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 

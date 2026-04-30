@@ -1,4 +1,5 @@
 import java.io.DataOutputStream;
+import java.io.DataInputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -8,6 +9,7 @@ public class Client {
 
         Socket s2 = new Socket("localhost", 7777);
         DataOutputStream ds2 = new DataOutputStream(s2.getOutputStream());
+        DataInputStream dis = new DataInputStream(s2.getInputStream());
         Scanner scanner = new Scanner(System.in);
 
         String message;
@@ -15,13 +17,15 @@ public class Client {
         while (true) {
             System.out.print("Enter message: ");
             message = scanner.nextLine();
+            ds2.writeUTF(message);
+            ds2.flush();
 
             if (message.equalsIgnoreCase("exit")) {
                 break;
             }
 
-            ds2.writeUTF(message);
-            ds2.flush();
+            String msg = dis.readUTF();
+            System.out.println("Received from server: " + msg);
         }
 
         scanner.close();
@@ -29,4 +33,5 @@ public class Client {
         s2.close();
         System.out.println("Connection closed.");
     }
+
 }
